@@ -1,0 +1,43 @@
+name: LocalPorts
+options:
+  bundleIdPrefix: com.carloscosta
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+targets:
+  LocalPorts:
+    type: application
+    platform: macOS
+    sources:
+      - LocalPorts
+    settings:
+      base:
+        INFOPLIST_FILE: LocalPorts/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.carloscosta.LocalPorts
+        PRODUCT_NAME: LocalPorts
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_STRICT_CONCURRENCY: complete
+    scheme:
+      testTargets:
+        - LocalPortsTests
+
+  LocalPortsTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - LocalPortsTests
+    dependencies:
+      - target: LocalPorts
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.carloscosta.LocalPortsTests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/LocalPorts.app/Contents/MacOS/LocalPorts"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        GENERATE_INFOPLIST_FILE: YES
