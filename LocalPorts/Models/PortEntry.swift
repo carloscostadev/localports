@@ -49,7 +49,7 @@ struct PortEntry: Identifiable, Equatable, Hashable {
         }
 
         // Fallback: first non-container directory under home
-        let containers: Set<String> = ["Documents", "Desktop", "Projects", "Developer", "Downloads", "Projetos Internos - Carlos"]
+        let containers: Set<String> = ["Documents", "Desktop", "Projects", "Developer", "Downloads"]
         let relative = String(projectPath.dropFirst(homePath.count + 1)) // remove ~/
         let components = relative.split(separator: "/").map(String.init)
 

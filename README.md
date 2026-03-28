@@ -14,7 +14,7 @@ A lightweight macOS menu bar app that shows all active localhost ports. Built wi
 - **Kill process** - stop a process with one click (SIGTERM → SIGKILL fallback)
 - **Restart process** - kill and relaunch with the same command
 - **Open in browser** - open `localhost:<port>` in your default browser
-- **Open in Warp** - open the project directory in Warp terminal
+- **Open in terminal** - open the project directory in Warp (or Terminal.app as fallback)
 - **Launch at login** - start automatically when you log in
 - **Polls every 3s** - always up to date
 
@@ -59,7 +59,7 @@ Click the icon to see all active localhost ports grouped by project. Each port s
 | Icon | Action |
 |------|--------|
 | ★ | Toggle favorite |
-| ▶ Terminal | Open project in Warp |
+| ▶ Terminal | Open project in terminal (Warp or Terminal.app) |
 | 🌐 Globe | Open in browser |
 | ↻ Arrow | Restart process |
 | ✕ X | Kill process |
