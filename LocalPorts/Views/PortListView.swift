@@ -57,6 +57,31 @@ struct PortListView: View {
                 }
             }
 
+            if !scanner.ports.isEmpty {
+                Divider()
+                    .padding(.vertical, 2)
+
+                Button {
+                    for entry in scanner.ports {
+                        ProcessManager.kill(pid: entry.pid)
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        scanner.scan()
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.caption)
+                        Text("Parar todas")
+                            .font(.caption)
+                    }
+                    .foregroundStyle(.red.opacity(0.8))
+                }
+                .buttonStyle(.borderless)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+            }
+
             Divider()
                 .padding(.vertical, 4)
 
@@ -135,7 +160,7 @@ struct PortListView: View {
                 favoritesManager.toggle(port: entry.port)
             },
             onOpenInWarp: {
-                ProcessManager.openInWarp(path: entry.projectPath)
+                ProcessManager.openTerminal(path: entry.projectPath)
             }
         )
     }

@@ -97,10 +97,12 @@ enum ProcessManager {
         }
     }
 
-    static func openInWarp(path: String) {
+    static func openTerminal(path: String) {
+        let warpURL = URL(fileURLWithPath: "/Applications/Warp.app")
+        let app = FileManager.default.fileExists(atPath: warpURL.path) ? "Warp" : "Terminal"
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-        process.arguments = ["-a", "Warp", path]
+        process.arguments = ["-a", app, path]
         try? process.run()
     }
 }
