@@ -117,8 +117,26 @@ struct PortListView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 4)
 
-            Button("Sair") {
-                NSApplication.shared.terminate(nil)
+            HStack(spacing: 8) {
+                Button("Sair") {
+                    NSApplication.shared.terminate(nil)
+                }
+
+                Button {
+                    let url = Bundle.main.bundleURL
+                    let config = NSWorkspace.OpenConfiguration()
+                    config.createsNewApplicationInstance = true
+                    NSWorkspace.shared.openApplication(at: url, configuration: config)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        NSApplication.shared.terminate(nil)
+                    }
+                } label: {
+                    HStack(spacing: 3) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.caption2)
+                        Text("Reiniciar")
+                    }
+                }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 4)
