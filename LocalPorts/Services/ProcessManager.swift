@@ -38,10 +38,20 @@ enum ProcessManager {
     }
 
     static func kill(pid: Int) {
-        Foundation.kill(Int32(pid), SIGTERM)
+        let pid32 = Int32(pid)
+        let pgid = getpgid(pid32)
+        // Kill the entire process group (e.g. npm + node) so the parent
+        // doesn't respawn the child. Fall back to individual PID.
+        if pgid > 0 {
+            Foundation.kill(-pgid, SIGTERM)
+        }
+        Foundation.kill(pid32, SIGTERM)
         DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
-            if Foundation.kill(Int32(pid), 0) == 0 {
-                Foundation.kill(Int32(pid), SIGKILL)
+            if Foundation.kill(pid32, 0) == 0 {
+                if pgid > 0 {
+                    Foundation.kill(-pgid, SIGKILL)
+                }
+                Foundation.kill(pid32, SIGKILL)
             }
         }
     }
@@ -73,10 +83,18 @@ enum ProcessManager {
         let workDir = getCwd(pid: pid)
         guard !workDir.isEmpty else { return }
 
-        Foundation.kill(Int32(pid), SIGTERM)
+        let pid32 = Int32(pid)
+        let pgid = getpgid(pid32)
+        if pgid > 0 {
+            Foundation.kill(-pgid, SIGTERM)
+        }
+        Foundation.kill(pid32, SIGTERM)
         DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
-            if Foundation.kill(Int32(pid), 0) == 0 {
-                Foundation.kill(Int32(pid), SIGKILL)
+            if Foundation.kill(pid32, 0) == 0 {
+                if pgid > 0 {
+                    Foundation.kill(-pgid, SIGKILL)
+                }
+                Foundation.kill(pid32, SIGKILL)
             }
             DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                 let escapedDir = workDir.replacingOccurrences(of: "'", with: "'\\''")

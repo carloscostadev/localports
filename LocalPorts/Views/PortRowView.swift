@@ -25,7 +25,7 @@ struct PortRowView: View {
                 .font(.system(.caption2, design: .monospaced))
                 .foregroundStyle(isKilling ? .tertiary : .tertiary)
 
-            if showPath {
+            if showPath && entry.displayPath.contains("/") {
                 Text(entry.displayPath)
                     .font(.system(.caption, design: .monospaced))
                     .foregroundStyle(isKilling ? .tertiary : .secondary)
@@ -76,6 +76,9 @@ struct PortRowView: View {
             Button {
                 isKilling = true
                 onKill()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    isKilling = false
+                }
             } label: {
                 if isKilling {
                     ProgressView()
